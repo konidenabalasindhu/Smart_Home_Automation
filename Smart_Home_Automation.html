@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Smart Home Automation Dashboard</title>
+<style>
+*{box-sizing:border-box}body{font-family:Arial,sans-serif;margin:0;background:#f1f5f9;color:#172554}
+header{background:#172554;color:white;padding:24px 7%}main{max-width:950px;margin:28px auto;padding:0 16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.card{background:white;padding:22px;border-radius:12px;box-shadow:0 3px 14px #0001}
+button{border:0;border-radius:8px;padding:11px 16px;background:#2563eb;color:white;cursor:pointer}
+input,select{padding:10px;border:1px solid #cbd5e1;border-radius:7px;margin:5px 0}
+.status{font-weight:bold}.hint{color:#64748b;font-size:14px}
+</style></head>
+<body>
+<header><h1>🏠 Smart Home Automation</h1><p>Control lights, fans and smart plugs from one dashboard.</p></header>
+<main>
+<h2>My Devices</h2>
+<div class="grid">
+ <section class="card"><h3>Living Room Light</h3><p class="status" id="lightStatus">⚪ OFF</p><button onclick="toggle('lightStatus',this)">Turn ON</button></section>
+ <section class="card"><h3>Bedroom Fan</h3><p class="status" id="fanStatus">⚪ OFF</p><button onclick="toggle('fanStatus',this)">Turn ON</button></section>
+ <section class="card"><h3>Kitchen Smart Plug</h3><p class="status" id="plugStatus">⚪ OFF</p><button onclick="toggle('plugStatus',this)">Turn ON</button></section>
+</div>
+<h2>Schedule Automation</h2>
+<section class="card">
+<form onsubmit="saveSchedule(event)">
+<label>Device</label><br><select id="device"><option>Living Room Light</option><option>Bedroom Fan</option><option>Kitchen Smart Plug</option></select><br>
+<label>Action</label><br><select id="action"><option>Turn ON</option><option>Turn OFF</option></select><br>
+<label>Date and time</label><br><input type="datetime-local" id="scheduleTime" required><br>
+<button type="submit">Save Schedule</button>
+</form><ul id="scheduleList"></ul>
+<p class="hint">This standalone HTML preview simulates device actions in your browser. Connect it to the Flask/MQTT backend for real IoT control.</p>
+</section>
+</main>
+<script>
+function toggle(id,button){const el=document.getElementById(id);const on=el.textContent.includes('OFF');el.textContent=on?'🟢 ON':'⚪ OFF';button.textContent=on?'Turn OFF':'Turn ON';}
+function saveSchedule(e){e.preventDefault();const li=document.createElement('li');li.textContent=document.getElementById('device').value+' — '+document.getElementById('action').value+' at '+document.getElementById('scheduleTime').value;document.getElementById('scheduleList').appendChild(li);e.target.reset();}
+</script></body></html>
